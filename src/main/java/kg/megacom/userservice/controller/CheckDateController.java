@@ -22,6 +22,7 @@ public class CheckDateController {
         this.dateRequestService = dateRequestService;
     }
 
+    //пункт №5
     @GetMapping("/check")
     public List<CheckDateResponse> getUsersByStatus(
             @RequestParam(required = false) UserStatus userStatus,

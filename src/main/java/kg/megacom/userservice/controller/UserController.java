@@ -16,19 +16,22 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    //пункт №1
     @PostMapping("/photo")
     public UserDto addPhoto(@RequestPart MultipartFile file){
         return userService.addPhoto(file);
     }
+    //пункт №2
     @PostMapping("/create")
     public UserDto createUser(@RequestBody UserDto userDto){
         return userService.saveUser(userDto);
     }
+    //пункт №3
     @GetMapping("/info")
     public UserDto getUserInfo(@RequestParam Long userId){
         return userService.findUserById(userId);
     }
+    //пункт №4
     @PostMapping("/status")
     public UserStatusResponse changeStatus(@RequestParam Long userId, @RequestParam UserStatus userStatus){
         return userService.changeStatus(userId, userStatus);

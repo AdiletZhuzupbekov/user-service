@@ -28,16 +28,21 @@ public class DateRequestServiceImpl implements DateRequestService {
     public List<CheckDateResponse> getUsersByStatus(UserStatus userStatus, Date date) {
         List<User> users = userRepo.findAll();
         List<CheckDateResponse> checkDateResponses;
+        // выводит всех согласно статусу
         if (userStatus!=null&& date==null) {
             users = users
                     .stream()
                     .filter(x -> x.getUserStatus() == userStatus)
                     .collect(Collectors.toList());
+            // выводит всех пользователей у которых изменились статусы после (по
+            //времени)этого уникального ID (timestamp).
         }else if (date!=null && userStatus==null){
             users = users
                     .stream()
                     .filter(x -> x.getCheckDate().getTime() > date.getTime())
                     .collect(Collectors.toList());
+            // выводит всех пользователей согласно статусу после (по
+            //времени)этого уникального ID (timestamp).
         }else if (userStatus!=null && date!=null) {
             users = users
                     .stream()
@@ -46,6 +51,7 @@ public class DateRequestServiceImpl implements DateRequestService {
         }
         checkDateResponses = checkDateResponseMapper.toDtoList(users);
 
+        //так как меппер не учитыает локалдейт и выводит дату на 6 часов назад. в ручную ставлю дату +6 часов
         checkDateResponses = checkDateResponses
                 .stream()
                 .peek(x -> x.setCheckDate(addHoursToJavaUtilDate(x.getCheckDate())))
@@ -54,6 +60,7 @@ public class DateRequestServiceImpl implements DateRequestService {
         return checkDateResponses;
     }
 
+    //добавление к дате плюс 6 часов
     public Date addHoursToJavaUtilDate(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

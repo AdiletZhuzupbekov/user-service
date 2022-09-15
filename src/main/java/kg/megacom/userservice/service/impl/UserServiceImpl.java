@@ -55,6 +55,12 @@ public class UserServiceImpl implements UserService {
         userStatusResponse.setNewStatus(userStatus);
         userStatusResponse.setUserId(userId);
         userRepo.save(user);
+        //иммитация задержки сервера
+        try {
+            Thread.sleep( 5000);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
         return userStatusResponse;
     }
 
