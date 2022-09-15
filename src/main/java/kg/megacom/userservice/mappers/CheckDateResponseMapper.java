@@ -15,7 +15,7 @@ public interface CheckDateResponseMapper extends CrudMapper<User, CheckDateRespo
 
 
     @Override
-    @Mapping(source = "userStatus",target = "userStatus")
+    @Mapping(target = "userStatus", expression = "java(LocalDateTime.ofInstant(source.getStartDate(), timezone.toZoneId()))")
     List<CheckDateResponse> toDtoList(List<User> users);
 
 

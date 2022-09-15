@@ -9,6 +9,7 @@ import kg.megacom.userservice.service.DateRequestService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +46,19 @@ public class DateRequestServiceImpl implements DateRequestService {
         }
         checkDateResponses = checkDateResponseMapper.toDtoList(users);
 
+        checkDateResponses = checkDateResponses
+                .stream()
+                .peek(x -> x.setCheckDate(addHoursToJavaUtilDate(x.getCheckDate())))
+                .collect(Collectors.toList());
+
         return checkDateResponses;
     }
+
+    public Date addHoursToJavaUtilDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, 6);
+        return calendar.getTime();
+    }
+
 }
